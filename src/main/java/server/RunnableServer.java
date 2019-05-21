@@ -27,14 +27,29 @@ public class RunnableServer implements Runnable {
                     System.out.println("Socket is stopped");
                     break;
                 }
-                outputStream.writeUTF(entry);
-                outputStream.flush();
+                for (RunnableServer rs : Server.clientList) {
+                    if(rs.equals(this)){
+                        rs.send("Your message was send to all participants.");
+                    }else {
+                        rs.send(entry);
+                    }
+                }
+                System.out.println("Server log: " + entry);
             }
             inputStream.close();
             outputStream.close();
             socket.close();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void send(String msg) {
+        try {
+            outputStream.writeUTF(msg + "\n");
+            outputStream.flush();
+        } catch (IOException ignored) {
+            //ignore
         }
     }
 }

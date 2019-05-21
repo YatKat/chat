@@ -31,6 +31,10 @@ public class Client {
                         }
                         break;
                     }
+                    if(inputStream.read() > -1){
+                        String input = inputStream.readUTF();
+                        System.out.println(input);
+                    }
                 }
             }
         } catch (IOException e) {
